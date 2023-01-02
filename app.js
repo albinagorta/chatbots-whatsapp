@@ -32,40 +32,41 @@ app.post("/webhook", (req, res) => {
     ) {
       let phone_number_id =
         req.body.entry[0].changes[0].value.metadata.phone_number_id;
+      let contacts = req.body.entry[0].changes[0].value.contacts[0].profile.name;
       let from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
       let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
 
       var msg_body_r = "";
       var hoy = new Date();
-      var fecha =
-        hoy.getDate() + " - 0" + (hoy.getMonth() + 1) + " - 0" + hoy.getFullYear();
-      var hora =
-        hoy.getHours() + ":" + hoy.getMinutes() + ":" + hoy.getSeconds();
+      var fecha = "0"+hoy.getDate() + " - 0" + (hoy.getMonth() + 1) + " - " + hoy.getFullYear();
+      var hora = hoy.getHours() + ":" + hoy.getMinutes() + ":" + hoy.getSeconds();
       var fechaYHora = fecha + " " + hora;
 
       switch (msg_body) {
         case "1":
-          msg_body_r = "Hola Buenas tardes \n";
+          msg_body_r = "Hola Buenas tardes "+contacts+"\n";
           msg_body_r += "La Fecha es: " + fecha;
           break;
 
         case "2":
-          msg_body_r = "Hola Buenas tardes \n";
+          msg_body_r = "Hola Buenas tardes "+contacts+"\n";
           msg_body_r += "La Hora es: " + hora;
           break;
 
         case "3":
-          msg_body_r = "Hola Buenas tardes \n";
+          msg_body_r = "Hola Buenas tardes "+contacts+"\n";
           msg_body_r += "La Fecha y Hora es: " + fechaYHora;
           break;
 
         default:
-          msg_body_r = "Elige una opción: \n";
+          msg_body_r = "Hola Buenas tardes "+contacts+"\n";
+          msg_body_r += "Elige una opción: \n";
           msg_body_r += "1: Quiero saber la fecha \n";
           msg_body_r += "2: Quiero saber la Hora \n";
           msg_body_r += "3: Quiero saber fecha y hora \n";
           break;
       }
+
       axios({
         method: "POST", // Required, HTTP method, a string, e.g. POST, GET
         url:
